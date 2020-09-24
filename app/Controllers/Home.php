@@ -59,6 +59,20 @@ class Home extends BaseController {
             $user_speech_duration[] = 0;
             $tmp=0;
             foreach ($user_speech as $key => $value) {
+
+                var_dump($value[0]);
+                var_dump($value[1]);
+                $needle  = range($value[0], $value[1]);
+               foreach ($customer_speech as $key_c=>$val_c) {
+                   if (array_intersect($val_c, $needle)) {
+                       var_dump($val_c);
+                       echo "Match found";
+                   } else {
+                       echo "Match not found";
+                   }
+               }
+
+
 //                $d = $value[1] - $value[0];
 //                var_dump($d);
 //                if ($user_speech[$key][1] > $customer_speech[$key][1]) {
