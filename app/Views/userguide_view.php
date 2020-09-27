@@ -245,7 +245,7 @@
                 <button onclick="toggleMenu();">&#9776;</button>
             </li>
             <li class="menu-item hidden"><a href="<?= site_url(); ?>">Home</a></li>
-            <li class="menu-item hidden"><a href="<?= site_url('userguide'); ?>">Docs</a></li>
+            <li class="menu-item hidden"><a href="<?= site_url('userguide'); ?>" target="_blank">Docs</a></li>
         </ul>
     </div>
 
@@ -261,18 +261,7 @@
 
 <!-- CONTENT -->
 <section class="wrapper">
-    <h1>Choose text file with data.</h1>
-    <?= $message; ?>
-<!--    <p>Choose text file with data.</p>-->
-<?= form_open_multipart(); ?>
-    <div>
-        User channel Data file:
-    <input type="file" name="data_file_user_channel" accept=".txt"/>
-    </div>
-    <div>
-        Customer channel Data file:
-    <input type="file" name="data_file_customer_channel" accept=".txt"/>
-    </div>
+    <h1>About this task</h1>
 <!--    <p>The page you are looking at is being generated dynamically by CodeIgniter.</p>-->
 <!--    <p>If you would like to edit this page you will find it located at:</p>-->
 <!---->
@@ -280,13 +269,6 @@
 <!---->
 <!--    <p>The corresponding controller for this page can be found at:</p>-->
 <!---->
-    <div style="margin-top: 20px;">
-        <?= form_submit('submit_file', 'Submit'); ?>
-    </div>
-    <?= form_close(); ?>
-    <?php if(!empty($result)){?>
-        <pre><code><?= json_encode($result); ?></code></pre>
-    <?php } ?>
 </section>
 
 
@@ -321,7 +303,7 @@
     }
 </script>
 
-<!-- SCRIPTS END -->
+<!-- -->
 
 </body>
 </html>
