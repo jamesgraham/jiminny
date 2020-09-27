@@ -10,6 +10,7 @@ class Home extends BaseController {
             $user_channel_file = $this->request->getFile('data_file_user_channel');
             $user_channel_file_content = file_get_contents($user_channel_file);
             $user_speech = [];
+            $user_channel = [];
             if (preg_match_all("/^\[silencedetect\s[^]]+\]\s([^\n]+)/m", $user_channel_file_content, $user_channel_file_data)) {
                 $user_speech_start[0] = 0;
                 $user_speech_end[0] = 0;
@@ -17,12 +18,20 @@ class Home extends BaseController {
                 foreach ($user_channel_file_data[1] as $user_channel_data) {
                     if (preg_match('/^[silence_start]+\S\s([^\n]+)/m', $user_channel_data, $user_silence_start)) {
                         $user_speech_end[$u] = $user_silence_start[1];
-                        $user_speech[] = [$user_speech_start[$u], $user_speech_end[$u]];
-                        $u++;
+                        $user_speech[] = [(double)$user_speech_start[$u], (double)$user_speech_end[$u]];
+                        if((int)($user_speech_end[$u] - $user_speech_start[$u]) >0) {
+                            $user_channel[$u]['speech_start'] = (double)$user_speech_start[$u];
+                            $user_channel[$u]['speech_end'] = (double)$user_speech_end[$u];
+                            $user_channel[$u]['speech_duration'] = ((double)$user_speech_end[$u] - (double)$user_speech_start[$u]);
+                            $user_channel[$u]['silence_start'] = (double)$user_silence_start[1];
+                            $u++;
+                        }
                     } else {
-                        $user_channel_data = explode('|', $user_channel_data);
+                        $user_channel_data = explode(' | ', $user_channel_data);
                         if (preg_match('/^[silence_end]+\S\s([^\n]+)/m', $user_channel_data[0], $user_silence_end)) {
                             $user_speech_start[$u] = trim($user_silence_end[1]);
+                            $user_channel[$u - 1]['silence_end'] = (double)$user_silence_end[1];
+                            $user_channel[$u - 1]['silence_duration'] = $user_channel[$u - 1]['silence_end'] - $user_channel[$u-1]['silence_start'];
                         }
                     }
                 }
@@ -32,6 +41,7 @@ class Home extends BaseController {
             $customer_channel_file = $this->request->getFile('data_file_customer_channel');
             $customer_channel_file_content = file_get_contents($customer_channel_file);
             $customer_speech = [];
+            $customer_channel = [];
             if (preg_match_all("/^\[silencedetect\s[^]]+\]\s([^\n]+)/m", $customer_channel_file_content, $customer_channel_file_data)) {
                 $customer_speech_start[0] = 0;
                 $customer_speech_end[0] = 0;
@@ -40,11 +50,21 @@ class Home extends BaseController {
                     if (preg_match('/^[silence_start]+\S\s([^\n]+)/m', $customer_channel_data, $customer_silence_start)) {
                         $customer_speech_end[$c] = $customer_silence_start[1];
                         $customer_speech[] = [$customer_speech_start[$c], $customer_speech_end[$c]];
-                        $c++;
+                        if((int)($customer_speech_end[$c] - $customer_speech_start[$c]) >1) {
+                            $customer_channel[$c]['speech_start'] = $customer_speech_start[$c];
+                            $customer_channel[$c]['speech_end'] = $customer_speech_end[$c];
+                            $customer_channel[$c]['speech_duration'] = $customer_speech_end[$c] - $customer_speech_start[$c];
+                            $customer_channel[$c]['silence_start'] = $customer_silence_start[1];
+                            $c++;
+                        }
                     } else {
-                        $customer_channel_data = explode('|', $customer_channel_data);
+                        $customer_channel_data = explode(' | ', $customer_channel_data);
                         if (preg_match('/^[silence_end]+\S\s([^\n]+)/m', $customer_channel_data[0], $customer_silence_end)) {
                             $customer_speech_start[$c] = trim($customer_silence_end[1]);
+                            if (isset($customer_channel[$c - 1]['silence_start'])) {
+                                $customer_channel[$c - 1]['silence_end'] = $customer_silence_end[1];
+                                $customer_channel[$c - 1]['silence_duration'] = $customer_channel[$c - 1]['silence_end'] - $customer_channel[$c - 1]['silence_start'];
+                            }
                         }
                     }
                 }
@@ -56,42 +76,6 @@ class Home extends BaseController {
             $data['result']['customer'] = $customer_speech;
 
             //Part 2
-            $user_speech_duration[] = 0;
-            $tmp=0;
-            foreach ($user_speech as $key => $value) {
-
-                var_dump($value[0]);
-                var_dump($value[1]);
-                $needle  = range($value[0], $value[1]);
-               foreach ($customer_speech as $key_c=>$val_c) {
-                   if (array_intersect($val_c, $needle)) {
-                       var_dump($val_c);
-                       echo "Match found";
-                   } else {
-                       echo "Match not found";
-                   }
-               }
-
-
-//                $d = $value[1] - $value[0];
-//                var_dump($d);
-//                if ($user_speech[$key][1] > $customer_speech[$key][1]) {
-//
-//
-//                    if ($d <= 0) {
-//                        $tmp = $d+$tmp;
-//                    } else {
-//                        $tmp = 0;
-//                    }
-//                }else{
-//
-//                }
-//
-//
-//                    $user_speech_duration[$key] = $d + $tmp;
-            }
-//            var_dump($user_speech_duration);
-
             //            $this->session->setFlashdata('message', 'Success!');
         }
         $data['message'] = $this->validation->getErrors() ? $this->validation->listErrors() : $this->session->getFlashdata('message');

@@ -284,7 +284,7 @@
     <?= form_submit('submit_file', 'Submit'); ?>
     <?= form_close(); ?>
     <?php if(!empty($result)){?>
-        <pre><code><?= json_encode($result, JSON_PRETTY_PRINT); ?></code></pre>
+        <pre><code><?= json_encode($result); ?></code></pre>
     <?php } ?>
 </section>
 
