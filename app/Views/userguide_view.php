@@ -251,7 +251,7 @@
 <!-- CONTENT -->
 <section class="wrapper">
     <h1>Instructions how to run the application</h1>
-    <p>The task is to create a program that consumes the raw output from an audio silence detection filter and converts it into a useful format for consumption by other APIs. Here are the original raw data for both the <a href="<?= base_url('files/user-channel.txt'); ?>">user channel</a>, and the <a href="<?= base_url('files/customer-channel.txt'); ?>">customer channel</a>.</p>
+    <p>The task is to create a program that consumes the raw output from an audio silence detection filter and converts it into a useful format for consumption by other APIs. Here are the original raw data files for both the <a href="<?= base_url('files/user-channel.txt'); ?>">user channel</a>, and the <a href="<?= base_url('files/customer-channel.txt'); ?>">customer channel</a>, in case you need them to test this application.</p>
     <p>Usage:</p>
     <ul>
         <li>
