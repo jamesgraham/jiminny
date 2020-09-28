@@ -238,7 +238,7 @@
     <div class="menu">
         <ul>
             <li class="menu-item hidden"><a href="<?= site_url(); ?>">Home</a></li>
-            <li class="menu-item hidden"><a href="<?= site_url('userguide'); ?>" target="_blank">Docs</a></li>
+            <li class="menu-item hidden"><a href="<?= site_url('userguide'); ?>">Docs</a></li>
         </ul>
     </div>
 
