@@ -252,16 +252,13 @@
 <section class="wrapper">
     <h1>Instructions how to run the application</h1>
     <p>The task is to create a program that consumes the raw output from an audio silence detection filter and converts it into a useful format for consumption by other APIs. Here are the original raw data files for both the <a href="<?= base_url('files/user-channel.txt'); ?>">user channel</a>, and the <a href="<?= base_url('files/customer-channel.txt'); ?>">customer channel</a>, in case you need them to test this application.</p>
-    <p>Usage:</p>
+    <p>Instructions:</p>
     <ul>
         <li>
-            Download and save both files to your computer
+            Upload raw data files (or use the ones provided in the above links), using the form on the home page.
         </li>
         <li>
-            Upload both files using the form on the home page
-        </li>
-        <li>
-            Use Submit button to get the result as JSON structured data.
+            Use the Submit button to get the result as JSON structured data.
         </li>
     </ul>
 
