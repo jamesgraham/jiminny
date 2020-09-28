@@ -251,7 +251,7 @@
 
 <!-- CONTENT -->
 <section class="wrapper">
-    <h1>Choose text file with data.</h1>
+    <h1>Choose and upload raw data text files for both user and customer channels using form below.</h1>
     <?= $message; ?>
     <?= form_open_multipart(); ?>
     <div>

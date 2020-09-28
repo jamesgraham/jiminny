@@ -251,13 +251,24 @@
 <!-- CONTENT -->
 <section class="wrapper">
     <h1>About this task</h1>
-<!--    <p>The page you are looking at is being generated dynamically by CodeIgniter.</p>-->
-<!--    <p>If you would like to edit this page you will find it located at:</p>-->
-<!---->
+    <p>Program that consume the raw output from an audio silence detection filter and convert it into a useful format for consumption by other APIs. The ffmpeg command has been run for a sample call. Here is the raw data for both the <a href="<?= base_url('files/user-channel.txt'); ?>">user channel</a>, and the <a href="<?= base_url('files/customer-channel.txt'); ?>">customer channel</a>.</p>
+    <p>Usage:</p>
+    <ul>
+        <li>
+            Download and save both files to your computer
+        </li>
+        <li>
+            Upload both files using the form on the home page
+        </li>
+        <li>
+            Use Submit button to get the result as JSON structured data.
+        </li>
+    </ul>
+
 <!--    <pre><code>app/Views/home_view.php</code></pre>-->
 <!---->
 <!--    <p>The corresponding controller for this page can be found at:</p>-->
-<!---->
+
 </section>
 
 

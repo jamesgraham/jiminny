@@ -30,15 +30,11 @@ class Home extends BaseController {
                         // Save speech points into array
                         $user_speech[] = [(float)$user_speech_start[$u], (float)$user_speech_end[$u]];
                         $user_speech_start[] = (float)$user_speech_start[$u];
-
-                        // Prevent saving noise in the array
-                        //                        if((int)($user_speech_end[$u] - $user_speech_start[$u]) >0) {
                         $user_channel[$u]['speech_start'] = (float)$user_speech_start[$u];
                         $user_channel[$u]['speech_end'] = (float)$user_speech_end[$u];
                         $user_channel[$u]['speech_duration'] = ((float)$user_speech_end[$u] - (float)$user_speech_start[$u]);
                         $user_channel[$u]['silence_start'] = (float)$user_silence_start[1];
                         $u++;
-                        //                        }
                     } else {
                         $user_channel_data = explode(' | ', $user_channel_data);
                         // Find silence_end end get the value
@@ -69,23 +65,20 @@ class Home extends BaseController {
                     if (preg_match('/^[silence_start]+\S\s([^\n]+)/m', $customer_channel_data, $customer_silence_start)) {
                         $customer_speech_end[$c] = $customer_silence_start[1];
                         // Save speech points into array
-                        $customer_speech[] = [$customer_speech_start[$c], $customer_speech_end[$c]];
+                        $customer_speech[] = [(float)$customer_speech_start[$c], (float)$customer_speech_end[$c]];
                         $customer_speech_start[] = (float)$customer_speech_start[$c];
-                        // Prevent saving noise in the array
-                        //                        if((int)($customer_speech_end[$c] - $customer_speech_start[$c]) >0) {
-                        $customer_channel[$c]['speech_start'] = $customer_speech_start[$c];
-                        $customer_channel[$c]['speech_end'] = $customer_speech_end[$c];
-                        $customer_channel[$c]['speech_duration'] = $customer_speech_end[$c] - $customer_speech_start[$c];
-                        $customer_channel[$c]['silence_start'] = $customer_silence_start[1];
+                        $customer_channel[$c]['speech_start'] = (float)$customer_speech_start[$c];
+                        $customer_channel[$c]['speech_end'] = (float)$customer_speech_end[$c];
+                        $customer_channel[$c]['speech_duration'] = (float)$customer_speech_end[$c] - (float)$customer_speech_start[$c];
+                        $customer_channel[$c]['silence_start'] = (float)$customer_silence_start[1];
                         $c++;
-                        //                        }
                     } else {
                         $customer_channel_data = explode(' | ', $customer_channel_data);
                         // Find silence_end end get the value
                         if (preg_match('/^[silence_end]+\S\s([^\n]+)/m', $customer_channel_data[0], $customer_silence_end)) {
                             $customer_speech_start[$c] = trim($customer_silence_end[1]);
                             if (isset($customer_channel[$c - 1]['silence_start'])) {
-                                $customer_channel[$c - 1]['silence_end'] = $customer_silence_end[1];
+                                $customer_channel[$c - 1]['silence_end'] = (float)$customer_silence_end[1];
                                 // Calculate new silence_duration after removing noise
                                 $customer_channel[$c - 1]['silence_duration'] = $customer_channel[$c - 1]['silence_end'] - $customer_channel[$c - 1]['silence_start'];
                             }
@@ -99,11 +92,7 @@ class Home extends BaseController {
             $data['result']['customer'] = $customer_speech;
 
             // Part 2
-            // Sort user data by speech duration time (ascendant)
-            usort($user_channel, function ($current, $next) {
-                return $next['speech_duration'] <=> $current['speech_duration'];
-            });
-
+            // Remove all interrupted speech data from user channel
             foreach ($user_channel as $key=>$u_speech) {
                 foreach ($customer_speech_start as $speech_start) {
                     if ($speech_start > $u_speech['speech_start'] && $speech_start < $u_speech['speech_end']) {
@@ -111,14 +100,16 @@ class Home extends BaseController {
                     }
                 }
             }
+            // Sort user data by speech duration time (ascendant)
+            usort($user_channel, function ($current, $next) {
+                return $next['speech_duration'] <=> $current['speech_duration'];
+            });
             // Get longest un-interrupted user speech from the array
             if(!empty($user_channel)) {
                 $data['result']['longest_user_monologue'] = number_format(array_values($user_channel)[0]['speech_duration'],3);
             }
-            // Sort customer data by speech duration time (ascendant)
-            usort($customer_channel, function ($current, $next) {
-                return $next['speech_duration'] <=> $current['speech_duration'];
-            });
+
+            // Remove all interrupted speech data from customer channel
             foreach ($customer_channel as $key=>$c_speech) {
                 foreach ($user_speech_start as $speech_start) {
                     if ($speech_start > $c_speech['speech_start'] && $speech_start < $c_speech['speech_end']) {
@@ -126,9 +117,13 @@ class Home extends BaseController {
                     }
                 }
             }
+            // Sort customer data by speech duration time (ascendant)
+            usort($customer_channel, function ($current, $next) {
+                return $next['speech_duration'] <=> $current['speech_duration'];
+            });
             // Get longest un-interrupted customer speech from the array
-            if(!empty($user_channel)) {
-                $data['result']['longest_customer_monologue'] = number_format(array_values($user_channel)[0]['speech_duration'],3);
+            if(!empty($customer_channel)) {
+                $data['result']['longest_customer_monologue'] = number_format(array_values($customer_channel)[0]['speech_duration'],3);
             }
 
             // Part 3
