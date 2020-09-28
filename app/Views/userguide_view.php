@@ -250,8 +250,8 @@
 
 <!-- CONTENT -->
 <section class="wrapper">
-    <h1>About this task</h1>
-    <p>Program that consume the raw output from an audio silence detection filter and convert it into a useful format for consumption by other APIs. The ffmpeg command has been run for a sample call. Here is the raw data for both the <a href="<?= base_url('files/user-channel.txt'); ?>">user channel</a>, and the <a href="<?= base_url('files/customer-channel.txt'); ?>">customer channel</a>.</p>
+    <h1>Instructions how to read the application</h1>
+    <p>Program that consumes the raw output from an audio silence detection filter and converts it into a useful format for consumption by other APIs. The ffmpeg command has been run for a sample call. Here is the raw data for both the <a href="<?= base_url('files/user-channel.txt'); ?>">user channel</a>, and the <a href="<?= base_url('files/customer-channel.txt'); ?>">customer channel</a>.</p>
     <p>Usage:</p>
     <ul>
         <li>
