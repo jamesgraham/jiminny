@@ -262,6 +262,15 @@
         </li>
     </ul>
 
+    <h2>Notes</h2>
+    <ul>
+        <li>
+            The required time to create the application is about 5 hours
+        </li>
+        <li>
+            Important: thi principle i have adopted to create this task is the assumption that if one party is talking for a given period of time and the other party says something during this period of time i consider as interruption and i break it into different monologues. And then i consider the time of the monologue and find the longest one.
+        </li>
+    </ul>
 <!--    <pre><code>app/Views/home_view.php</code></pre>-->
 <!---->
 <!--    <p>The corresponding controller for this page can be found at:</p>-->
