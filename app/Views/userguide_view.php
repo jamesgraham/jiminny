@@ -265,7 +265,7 @@
     <h2>Notes</h2>
     <ul>
         <li>
-            Important: the principle I have adopted to create second part of this task is the assumption that if one party is talking for a given period of time and the other party says something during this period of time I exclude this monologue from the data array as the task specifically says to find out only the longest un-interrupted speech . And then I consider the time of the speech and find the longest one.
+            Important: the principle I have adopted to create the second part of this task is the assumption that if one party is talking for a given period of time and the other party says something during this period of time I exclude this monologue from the data array as the task specifically says to find out only the longest un-interrupted speech . And then I consider the time of the speech and find the longest one.
         </li>
         <li>
             The required time to create the application is about 5 hours
