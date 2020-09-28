@@ -255,7 +255,7 @@
     <p>Instructions:</p>
     <ul>
         <li>
-            Upload raw data files (or use the ones provided in the above links), using the form on the home page.
+            Upload raw data files (or use the ones provided in the above links), using the form on the <a href="<?= site_url(); ?>">Home page</a>.
         </li>
         <li>
             Use the Submit button to get the result as JSON structured data.
