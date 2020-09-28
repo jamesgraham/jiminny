@@ -28,19 +28,19 @@ class Home extends BaseController {
                     if (preg_match('/^[silence_start]+\S\s([^\n]+)/m', $user_channel_data, $user_silence_start)) {
                         $user_speech_end[$u] = $user_silence_start[1];
                         // Save speech points into array
-                        $user_speech[] = [(float)$user_speech_start[$u], (float)$user_speech_end[$u]];
-                        $user_speech_start[] = (float)$user_speech_start[$u];
-                        $user_channel[$u]['speech_start'] = (float)$user_speech_start[$u];
-                        $user_channel[$u]['speech_end'] = (float)$user_speech_end[$u];
-                        $user_channel[$u]['speech_duration'] = ((float)$user_speech_end[$u] - (float)$user_speech_start[$u]);
-                        $user_channel[$u]['silence_start'] = (float)$user_silence_start[1];
+                        $user_speech[] = [$user_speech_start[$u], $user_speech_end[$u]];
+                        $user_speech_start[] = $user_speech_start[$u];
+                        $user_channel[$u]['speech_start'] = $user_speech_start[$u];
+                        $user_channel[$u]['speech_end'] = $user_speech_end[$u];
+                        $user_channel[$u]['speech_duration'] = ($user_speech_end[$u] - $user_speech_start[$u]);
+                        $user_channel[$u]['silence_start'] = $user_silence_start[1];
                         $u++;
                     } else {
                         $user_channel_data = explode(' | ', $user_channel_data);
                         // Find silence_end end get the value
                         if (preg_match('/^[silence_end]+\S\s([^\n]+)/m', $user_channel_data[0], $user_silence_end)) {
                             $user_speech_start[$u] = trim($user_silence_end[1]);
-                            $user_channel[$u - 1]['silence_end'] = (float)$user_silence_end[1];
+                            $user_channel[$u - 1]['silence_end'] = $user_silence_end[1];
                             // Calculate new silence_duration after removing noise
                             $user_channel[$u - 1]['silence_duration'] = $user_channel[$u - 1]['silence_end'] - $user_channel[$u - 1]['silence_start'];
                         }
@@ -65,12 +65,12 @@ class Home extends BaseController {
                     if (preg_match('/^[silence_start]+\S\s([^\n]+)/m', $customer_channel_data, $customer_silence_start)) {
                         $customer_speech_end[$c] = $customer_silence_start[1];
                         // Save speech points into array
-                        $customer_speech[] = [(float)$customer_speech_start[$c], (float)$customer_speech_end[$c]];
-                        $customer_speech_start[] = (float)$customer_speech_start[$c];
-                        $customer_channel[$c]['speech_start'] = (float)$customer_speech_start[$c];
-                        $customer_channel[$c]['speech_end'] = (float)$customer_speech_end[$c];
-                        $customer_channel[$c]['speech_duration'] = (float)$customer_speech_end[$c] - (float)$customer_speech_start[$c];
-                        $customer_channel[$c]['silence_start'] = (float)$customer_silence_start[1];
+                        $customer_speech[] = [$customer_speech_start[$c], $customer_speech_end[$c]];
+                        $customer_speech_start[] = $customer_speech_start[$c];
+                        $customer_channel[$c]['speech_start'] = $customer_speech_start[$c];
+                        $customer_channel[$c]['speech_end'] = $customer_speech_end[$c];
+                        $customer_channel[$c]['speech_duration'] = $customer_speech_end[$c] - $customer_speech_start[$c];
+                        $customer_channel[$c]['silence_start'] = $customer_silence_start[1];
                         $c++;
                     } else {
                         $customer_channel_data = explode(' | ', $customer_channel_data);
@@ -78,7 +78,7 @@ class Home extends BaseController {
                         if (preg_match('/^[silence_end]+\S\s([^\n]+)/m', $customer_channel_data[0], $customer_silence_end)) {
                             $customer_speech_start[$c] = trim($customer_silence_end[1]);
                             if (isset($customer_channel[$c - 1]['silence_start'])) {
-                                $customer_channel[$c - 1]['silence_end'] = (float)$customer_silence_end[1];
+                                $customer_channel[$c - 1]['silence_end'] = $customer_silence_end[1];
                                 // Calculate new silence_duration after removing noise
                                 $customer_channel[$c - 1]['silence_duration'] = $customer_channel[$c - 1]['silence_end'] - $customer_channel[$c - 1]['silence_start'];
                             }
